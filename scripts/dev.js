@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-04-26 21:48:36
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-04-26 23:50:08
+ * @LastEditTime : 2022-04-27 21:51:25
  */
 const minimist = require('minimist');
 const execa = require('execa');
@@ -10,11 +10,8 @@ const execa = require('execa');
 // 执行命令时打包的文件
 const args = minimist(process.argv.slice(2)); // 获取命令行参数
 const target = args._.length ? args._[0] : 'reactivity'; // 获取打包目标文件夹
-const formats = args.f || ['iife', 'esm-bundler', 'cjs-bundler']; // 获取打包格式
-console.log('formats', formats);
+const formats = args.f; // 获取打包格式
 const sourcemap = args.s || false; // 获取是否生成sourcemap
-
-
 
 execa('rollup', [
     '-wc', // --watch --config

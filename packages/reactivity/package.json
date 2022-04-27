@@ -10,7 +10,7 @@
     "formats": [
       "esm-bundler",
       "cjs-bundler",
-      "iife"
+      "global"
     ]
   },
   "dependencies": {

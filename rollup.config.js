@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-04-26 22:00:50
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-04-27 00:02:59
+ * @LastEditTime : 2022-04-27 22:48:05
  */
 
 import path from 'path'
@@ -11,7 +11,7 @@ import json from '@rollup/plugin-json'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 
-const packageFormats =  process.env.FORMATS && process.env.FORMATS.split(',')
+const packageFormats =  process.env.FORMATS
 const sourcemap = process.env.SOURCE_MAP
 const target = process.env.TARGET
 
@@ -35,31 +35,27 @@ const outputConfig = {
     file: resolveFile(`dist/${pkg.name}.cjs-bundler.js`),
     sourcemap,
   },
-  "iife": {
+  "global": {
     file: resolveFile(`dist/${pkg.name}.global.js`),
     format: 'iife',
     sourcemap
   }
 }
 
+const packageConfigs = packageFormats === 'undefined' ? pkg.buildOptions.formats : packageFormats.split(',')
 
-const createConfig = ({ file, format=pkg.buildOptions.formats, sourcemap }) => ({
+const createConfig = (output) => ({
   input: resolveFile(`src/index.ts`),
-  output: {
-    file,
-    format,
-    sourcemap,
-    name: format === 'iife' ? pkg.buildOptions.name : pkg.name,
-    externa: format === 'iife' ? [] : external,
-    plugins: [
-      json(),
-      ts(),
-      commonjs(),
-      nodeResolve(),
-      
-    ],
-  }
+  output,
+  name: output.format === 'iife' ? pkg.buildOptions.name : pkg.name,
+  externa: output.format === 'iife' ? [] : external,
+  plugins: [
+    ts(),
+    json(),
+    commonjs(),
+    nodeResolve(),
+  ],
 })
-console.log('packageFormats', typeof process.env.FORMATS)
-export default packageFormats.map(format => createConfig(outputConfig[format]))
+console.log(packageConfigs.map(format => createConfig(outputConfig[format])))
+export default packageConfigs.map(format => createConfig(outputConfig[format]))
 
