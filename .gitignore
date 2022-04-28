@@ -1,7 +1,8 @@
 dist
 .DS_Store
-# node_modules
+node_modules
 *.log
 .idea
 .history
 .vscode
+packages/reactivity/dist

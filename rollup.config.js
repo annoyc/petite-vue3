@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-04-26 22:00:50
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-04-27 22:48:05
+ * @LastEditTime : 2022-04-28 10:13:21
  */
 
 import path from 'path'
@@ -46,8 +46,10 @@ const packageConfigs = packageFormats === 'undefined' ? pkg.buildOptions.formats
 
 const createConfig = (output) => ({
   input: resolveFile(`src/index.ts`),
-  output,
-  name: output.format === 'iife' ? pkg.buildOptions.name : pkg.name,
+  output: {
+    ...output,
+    name: output.format === 'iife' ? pkg.buildOptions.name : pkg.name,
+  },
   externa: output.format === 'iife' ? [] : external,
   plugins: [
     ts(),

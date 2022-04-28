@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node scripts/dev.js reactivity -f esm-bundler  -s"
+    "dev": "node scripts/dev.js reactivity -f esm-bundler"
   },
   "keywords": [],
   "author": "",
