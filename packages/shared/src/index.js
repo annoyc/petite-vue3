@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-04-26 21:35:14
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-05 22:32:07
+ * @LastEditTime : 2022-05-05 23:07:39
  */
 export function isObject(value) {
 	return value !== null && typeof value === 'object'
@@ -18,4 +18,8 @@ export function hasChanged(oldValue, value) {
 
 export function isArray(target) {
 	return Array.isArray(target)
+}
+
+export function isRef(value) {
+	return !!(value && value.__isRef)
 }

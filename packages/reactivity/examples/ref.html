@@ -1,8 +1,8 @@
 <!--
  * @Author       : zhangyc
- * @Date         : 2022-05-05 22:46:57
+ * @Date         : 2022-05-05 23:04:10
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-05 23:45:45
+ * @LastEditTime : 2022-05-05 23:58:54
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -15,17 +15,15 @@
 </head>
 
 <body>
-  <!-- reactive array -->
   <script type="module">
-    import { reactive, effect } from '../dist/@vue/reactivity.esm-bundler.js';
-    const observed = reactive([1, 2, 3]);
+    import { ref, effect } from '../dist/@vue/reactivity.esm-bundler.js';
+    const foo = ref(1)
     effect(() => {
-      console.log('index 4 is', observed[4]);
+      console.log('foo is', foo.value)
     })
-    effect(() => {
-      console.log('length is', observed.length);
-    })
-    window.observed = observed;
+    setTimeout(() => {
+      foo.value++
+    }, 1000);
   </script>
 </body>
 
