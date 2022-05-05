@@ -2,11 +2,10 @@
  * @Author       : zhangyc
  * @Date         : 2022-04-26 22:00:50
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-04-28 10:13:21
+ * @LastEditTime : 2022-05-05 20:41:41
  */
 
 import path from 'path'
-import ts from 'rollup-plugin-typescript2'
 import json from '@rollup/plugin-json'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
@@ -45,14 +44,13 @@ const outputConfig = {
 const packageConfigs = packageFormats === 'undefined' ? pkg.buildOptions.formats : packageFormats.split(',')
 
 const createConfig = (output) => ({
-  input: resolveFile(`src/index.ts`),
+  input: resolveFile(`src/index.js`),
   output: {
     ...output,
     name: output.format === 'iife' ? pkg.buildOptions.name : pkg.name,
   },
   externa: output.format === 'iife' ? [] : external,
   plugins: [
-    ts(),
     json(),
     commonjs(),
     nodeResolve(),

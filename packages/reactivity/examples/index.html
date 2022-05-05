@@ -12,22 +12,18 @@
   <div id="app"></div>
   <!-- <script src="../dist/@vue/reactivity.global.js"></script> -->
   <script type="module">
-    import { reactive } from '../dist/@vue/reactivity.esm-bundler.js';
+    import { reactive, effect } from '../dist/@vue/reactivity.esm-bundler.js';
     // const { reactive } = VueReactivity;
 
 
-
-    function hello(a) {
-      console.log('hello', a);
-      return a
-    }
-    let obj = {
+    let obj = reactive({
       name: 'John',
       age: 30
-    }
-    let a = reactive(obj)
-    let b = reactive(obj)
-    console.log(reactive(a) === b)
+    })
+    effect(() => {
+      app.innerText = `我的名字是${obj.name}，今年${obj.age}岁`;
+    })
+    window.app = document.getElementById('app');
   </script>
 </body>
 
