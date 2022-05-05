@@ -5,7 +5,7 @@ import { effect, track, trigger } from './effect'
  * @Author       : zhangyc
  * @Date         : 2022-05-06 00:04:55
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-06 01:07:44
+ * @LastEditTime : 2022-05-06 01:24:37
  */
 export function computed(getterOrOption) {
 	let getter, setter
@@ -33,8 +33,7 @@ class ComputedImpl {
 			scheduler: () => {
 				if (!this._dirty) {
 					this._dirty = true
-					// TODO: why trigger ?
-					// trigger(this, 'value')
+					trigger(this, 'value')
 				}
 			},
 		})

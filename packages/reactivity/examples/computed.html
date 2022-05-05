@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-05-06 00:34:39
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-06 00:59:28
+ * @LastEditTime : 2022-05-06 01:24:02
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,7 @@
 
 <body>
   <script type="module">
-    import { ref, computed } from '../dist/@vue/reactivity.esm-bundler.js';
+    import { ref, computed, effect } from '../dist/@vue/reactivity.esm-bundler.js';
     const num = ref(0)
     const c = computed(() => {
       console.log('computed num is', num.value)
@@ -41,6 +41,10 @@
       set(newValue) {
         num.value = newValue
       }
+    })
+
+    effect(() => {
+      console.log('effect d is', d.value)
     })
     setTimeout(() => {
       console.log(d.value)
