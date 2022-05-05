@@ -1,0 +1,58 @@
+<!--
+ * @Author       : zhangyc
+ * @Date         : 2022-05-06 00:34:39
+ * @LastEditors  : zhangyc
+ * @LastEditTime : 2022-05-06 00:59:28
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module">
+    import { ref, computed } from '../dist/@vue/reactivity.esm-bundler.js';
+    const num = ref(0)
+    const c = computed(() => {
+      console.log('computed num is', num.value)
+      return num.value + 10
+    })
+    // setTimeout(() => {
+    //   console.log(c.value)
+    // }, 1000);
+    // setTimeout(() => {
+    //   console.log(c.value)
+    // }, 1500);
+    // setTimeout(() => {
+    //   num.value = 5
+    //   console.log(c.value)
+    // }, 2000);
+
+    const d = computed({
+      get() {
+        console.log('computed d is', num.value)
+        return num.value + 100
+      },
+      set(newValue) {
+        num.value = newValue
+      }
+    })
+    setTimeout(() => {
+      console.log(d.value)
+    }, 1000);
+    setTimeout(() => {
+      console.log(d.value)
+    }, 1500);
+    setTimeout(() => {
+      d.value = 100
+      console.log(d.value)
+    }, 2000);
+  </script>
+</body>
+
+</html>

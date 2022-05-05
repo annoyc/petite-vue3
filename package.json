@@ -1,21 +1,21 @@
 {
-  "name": "petite-vue3",
-  "private": "true",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "node scripts/dev.js reactivity -f esm-bundler"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.2.1",
-    "execa": "4",
-    "minimist": "^1.2.6",
-    "rollup": "^2.70.2"
-  }
+	"name": "petite-vue3",
+	"private": "true",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "node scripts/dev.js reactivity -f esm-bundler"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^22.0.0",
+		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-node-resolve": "^13.2.1",
+		"execa": "4",
+		"minimist": "^1.2.6",
+		"rollup": "^2.70.2"
+	}
 }
