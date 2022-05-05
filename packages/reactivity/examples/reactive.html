@@ -9,22 +9,24 @@
 </head>
 
 <body>
-  <div id="app"></div>
-  <!-- <script src="../dist/@vue/reactivity.global.js"></script> -->
+  <div id="app">
+  </div>
+  <!-- reactive -->
   <script type="module">
     import { reactive, effect } from '../dist/@vue/reactivity.esm-bundler.js';
-    // const { reactive } = VueReactivity;
-
-
-    let obj = reactive({
-      name: 'John',
-      age: 30
+    const observed = reactive({
+      count: 1
     })
     effect(() => {
-      app.innerText = `我的名字是${obj.name}，今年${obj.age}岁`;
+      console.log('effect executed, observed is updated to', observed.count);
+      app.innerText = `observed.count is ${observed.count}`;
     })
-    window.app = document.getElementById('app');
+
+    setTimeout(() => {
+      observed.count = 2;
+    }, 1000);
   </script>
+
 </body>
 
 </html>

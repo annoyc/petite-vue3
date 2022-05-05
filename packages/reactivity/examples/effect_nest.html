@@ -1,0 +1,46 @@
+<!--
+ * @Author       : zhangyc
+ * @Date         : 2022-05-05 22:51:26
+ * @LastEditors  : zhangyc
+ * @LastEditTime : 2022-05-05 23:01:37
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+  </div>
+  <!-- reactive -->
+  <script type="module">
+    import { reactive, effect } from '../dist/@vue/reactivity.esm-bundler.js';
+    const observed = reactive({
+      count1: 1,
+      count2: 10
+    })
+    effect(() => {
+      effect(() => {
+        console.log('count2 is', observed.count2);
+      })
+      console.log('count1 is', observed.count1);
+    })
+
+    setTimeout(() => {
+      observed.count2++
+    }, 1000);
+
+    // 未出发任何effectFn
+    setTimeout(() => {
+      observed.count1++
+    }, 2000);
+  </script>
+
+</body>
+
+</html>
