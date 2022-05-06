@@ -1,4 +1,4 @@
-import { hasChanged, isObject, isRef } from '../../shared/src'
+import { hasChanged, isObject, isRef } from '@vue/shared'
 import { track, trigger } from './effect'
 import { reactive } from './reactive'
 
@@ -6,7 +6,7 @@ import { reactive } from './reactive'
  * @Author       : zhangyc
  * @Date         : 2022-05-05 23:06:04
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-06 00:02:25
+ * @LastEditTime : 2022-05-06 21:43:07
  */
 export function ref(value) {
 	if (isRef(value)) {

@@ -1,11 +1,10 @@
-import { isFunction } from '../../shared/src'
+import { isFunction } from '@vue/shared'
 import { effect, track, trigger } from './effect'
-
 /*
  * @Author       : zhangyc
  * @Date         : 2022-05-06 00:04:55
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-06 01:24:37
+ * @LastEditTime : 2022-05-06 21:19:53
  */
 export function computed(getterOrOption) {
 	let getter, setter

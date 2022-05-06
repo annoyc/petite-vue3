@@ -1,4 +1,4 @@
-import { hasChanged, isArray, isObject, isReactive } from '../../shared/src'
+import { hasChanged, isArray, isObject, isReactive } from '@vue/shared'
 import { track, trigger } from './effect'
 
 const proxyMap = new WeakMap()
