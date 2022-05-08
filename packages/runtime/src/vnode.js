@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-05-06 22:06:54
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-08 16:04:02
+ * @LastEditTime : 2022-05-08 21:32:20
  */
 import { isString, isNumber, isArray } from '@vue/shared'
 export const ShapeFlags = {
@@ -17,7 +17,6 @@ export const ShapeFlags = {
 
 export const Text = Symbol('Text')
 export const Fragment = Symbol('Fragment')
-
 /**
  *
  * @param {string | Object | Text | Fragment} type
@@ -49,5 +48,6 @@ export function h(type, props, children) {
 		props,
 		children,
 		shapeFlag,
+		el: null,
 	}
 }

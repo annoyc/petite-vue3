@@ -1,0 +1,39 @@
+<!--
+ * @Author       : zhangyc
+ * @Date         : 2022-05-08 20:57:19
+ * @LastEditors  : zhangyc
+ * @LastEditTime : 2022-05-08 21:31:04
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module">
+    import { h, render, Text, Fragment } from '../dist/@vue/runtime.esm-bundler.js';
+    const vnode1 = h('ul', null, [
+      h('li', null, 'first'),
+      h(Fragment, null, []),
+      h('li', null, 'third')
+    ])
+    const vnode2 = h('ul', null, [
+      h('li', null, 'first'),
+      h(Fragment, null, [
+        h('li', null, 'middle')
+      ]),
+      h('li', null, 'third')
+    ])
+    render(vnode1, document.body)
+    setTimeout(() => {
+      render(vnode2, document.body)
+    }, 2000);
+  </script>
+</body>
+
+</html>

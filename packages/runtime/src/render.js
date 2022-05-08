@@ -1,87 +1,157 @@
 /*
  * @Author       : zhangyc
- * @Date         : 2022-05-08 15:03:06
+ * @Date         : 2022-05-08 16:25:09
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-08 16:08:06
+ * @LastEditTime : 2022-05-08 21:37:22
  */
 import { ShapeFlags } from './vnode'
+import { patchProps } from './patchProps'
+
 export function render(vnode, container) {
-	mount(vnode, container)
+	const prevNode = container._vnode
+	if (!vnode) {
+		if (prevNode) {
+			unmount(prevNode, container)
+		}
+	} else {
+		patch(prevNode, vnode, container)
+	}
+	// mount(vnode, container)
+	container._vnode = vnode
 }
 
-function mount(vnode, container) {
-	const { shapeFlag } = vnode
-	if (shapeFlag & ShapeFlags.ELEMENT) {
-		mountElement(vnode, container)
-	} else if (shapeFlag & ShapeFlags.TEXT) {
-		mountTextNode(vnode, container)
-	} else if (shapeFlag & ShapeFlags.FRAGMENT) {
-		mountFragment(vnode, container)
+function unmount(vnode) {
+	const { shapeFlag, el } = vnode
+	if (shapeFlag & ShapeFlags.FRAGMENT) {
+		unmountFragment(vnode)
 	} else if (shapeFlag & ShapeFlags.COMPONENT) {
-		mountComponent(vnode, container)
+		unmountComponent(vnode)
+	} else {
+		el.parentNode.removeChild(el)
 	}
 }
 
-function mountElement(vnode, container) {
-	const { type, props } = vnode
-	const el = document.createElement(type)
-	mountProps(el, props)
-	mountChildren(vnode, el)
-	container.appendChild(el)
-}
-function mountTextNode(vnode, container) {
-	const textNode = document.createTextNode(vnode.children)
-	container.appendChild(textNode)
-}
-function mountFragment(vnode, container) {
-	mountChildren(vnode, container)
-}
-function mountComponent(vnode, container) {}
+function patch(n1, n2, container) {
+	if (n1 && !isSameVNode(n1, n2)) {
+		unmount(n1)
+		n1 = null
+	}
 
-function mountChildren(vnode, container) {
-	const { shapeFlag, children } = vnode
+	const { shapeFlag } = n2
+	if (shapeFlag & ShapeFlags.COMPONENT) {
+		processComponent(n1, n2, container)
+	} else if (shapeFlag & ShapeFlags.ELEMENT) {
+		processElement(n1, n2, container)
+	} else if (shapeFlag & ShapeFlags.TEXT) {
+		processTextNode(n1, n2, container)
+	} else if (shapeFlag & ShapeFlags.FRAGMENT) {
+		processFragment(n1, n2, container)
+	}
+}
+
+function isSameVNode(n1, n2) {
+	return n1.type === n2.type
+}
+
+function processElement(n1, n2, container) {
+	if (n1) {
+		patchElement(n1, n2)
+	} else {
+		mountElement(n2, container)
+	}
+}
+function processTextNode(n1, n2, container) {
+	if (n1) {
+		n2.el = n1.el
+		n1.el.textContent = n2.children
+	} else {
+		mountTextNode(n2, container)
+	}
+}
+function processFragment(n1, n2, container) {
+	if (n1) {
+		patchChildren(n1, n2, container)
+	} else {
+		mountChildren(n2.children, container)
+	}
+}
+function processComponent(n1, n2, container) {}
+function patchElement(n1, n2) {
+	n2.el = n1.el
+	patchProps(n1.props, n2.props, n2.el)
+	patchChildren(n1, n2, n2.el)
+}
+function patchChildren(n1, n2, container) {
+	const { shapeFlag: prevShapeFlag, children: c1 } = n1
+	const { shapeFlag, children: c2 } = n2
 	if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
-		mountTextNode(vnode, container)
+		if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+			unmountChildren(c1)
+		}
+		if (c1 !== c2) {
+			container.textContent = c2
+		}
 	} else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
-		children.forEach(child => {
-			mount(child, container)
-		})
-	}
-}
-
-const domPropsRE = /[A-Z]|^(?:value|checked|selected|muted|disabled)$/
-function mountProps(el, props) {
-	for (const key in props) {
-		let value = props[key]
-		switch (key) {
-			case 'class':
-				el.className = value
-				break
-			case 'style':
-				for (const styleKey in value) {
-					el.style[styleKey] = value[styleKey]
-				}
-				break
-			default:
-				// 判断on开头事件
-				if (/^on[^a-z]/.test(key)) {
-					const evtName = key.toLowerCase().substring(2)
-					el.addEventListener(evtName, value)
-				} else if (domPropsRE.test(key)) {
-					// { checked: ''} 或 { checked: false }会被解析为string类型的"false"
-					if (value === '' && typeof el[key] === 'boolean') {
-						value = true
-					}
-					el[key] = value
-				} else {
-					// 如果自定义属性{custom: ''}，则移除该属性
-					if (value == null || value === false) {
-						el.removeAttribute(key)
-					} else {
-						el.setAttribute(key, value)
-					}
-				}
-				break
+		if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {
+			container.textContent = ''
+			mountChildren(c2, container)
+		} else if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+			patchArrayChildren(c1, c2, container)
+		} else {
+			mountChildren(c2, container)
+		}
+	} else {
+		if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {
+			container.textContent = ''
+		} else if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+			unmountChildren(c1)
+		} else {
 		}
 	}
 }
+function patchArrayChildren(c1, c2, container) {
+	const oldLength = c1.length
+	const newLength = c2.length
+	const commonLength = Math.min(oldLength, newLength)
+	let i = 0
+	while (i < commonLength) {
+		patch(c1[i], c2[i], container)
+		i++
+	}
+	if (oldLength > commonLength) {
+		unmountChildren(c1.slice(commonLength))
+	} else if (newLength > commonLength) {
+		mountChildren(c2.slice(commonLength), container)
+	} else {
+		// noop
+	}
+}
+function unmountChildren(children) {
+	children.forEach(child => {
+		unmount(child)
+	})
+}
+
+function mountTextNode(vnode, container) {
+	const textNode = document.createTextNode(vnode.children)
+	container.appendChild(textNode)
+	vnode.el = textNode
+}
+function mountElement(vnode, container) {
+	const { type, props, shapeFlag, children } = vnode
+	const el = document.createElement(type)
+	patchProps(null, props, el)
+	if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
+		mountTextNode(vnode, el)
+	} else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+		mountChildren(children, el)
+	}
+	container.appendChild(el)
+	vnode.el = el
+}
+function mountChildren(children, container) {
+	children.forEach(child => {
+		patch(null, child, container)
+	})
+}
+export function mount(vnode, container) {}
