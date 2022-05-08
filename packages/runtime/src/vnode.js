@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-05-06 22:06:54
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-08 21:32:20
+ * @LastEditTime : 2022-05-08 21:39:29
  */
 import { isString, isNumber, isArray } from '@vue/shared'
 export const ShapeFlags = {
@@ -49,5 +49,6 @@ export function h(type, props, children) {
 		children,
 		shapeFlag,
 		el: null,
+		ancher: null,
 	}
 }

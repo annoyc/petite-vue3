@@ -2,7 +2,7 @@
  * @Author       : zhangyc
  * @Date         : 2022-05-08 17:30:39
  * @LastEditors  : zhangyc
- * @LastEditTime : 2022-05-08 17:32:12
+ * @LastEditTime : 2022-05-08 22:26:08
  */
 
 export function patchProps(oldProps, newProps, el) {
@@ -35,17 +35,22 @@ function patchDomProps(prev, next, el, key) {
 			el.className = next || ''
 			break
 		case 'style':
-			for (const styleKey in next) {
-				el.style[styleKey] = next[styleKey]
-			}
-			// prev{color: 'red'} next{border: '1px solid'} 此时需移除prev.color
-			if (prev) {
-				for (const styleKey in prev) {
-					if (!next || !next.hasOwnProperty(styleKey)) {
-						el.style[styleKey] = ''
+			if (next == null) {
+				el.removeAttribute('style')
+			} else {
+				for (const styleKey in next) {
+					el.style[styleKey] = next[styleKey]
+				}
+				// prev{color: 'red'} next{border: '1px solid'} 此时需移除prev.color
+				if (prev) {
+					for (const styleKey in prev) {
+						if (!next || !next.hasOwnProperty(styleKey)) {
+							el.style[styleKey] = ''
+						}
 					}
 				}
 			}
+
 			break
 		default:
 			// 判断on开头事件

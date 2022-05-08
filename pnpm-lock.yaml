@@ -24,6 +24,12 @@ importers:
     dependencies:
       '@vue/shared': link:../shared
 
+  packages/runtime:
+    specifiers:
+      '@vue/shared': workspace:^1.0.0
+    dependencies:
+      '@vue/shared': link:../shared
+
   packages/shared:
     specifiers: {}
 
