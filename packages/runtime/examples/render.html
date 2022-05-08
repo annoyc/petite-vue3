@@ -1,0 +1,44 @@
+<!--
+ * @Author       : zhangyc
+ * @Date         : 2022-05-08 15:46:17
+ * @LastEditors  : zhangyc
+ * @LastEditTime : 2022-05-08 16:10:27
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module">
+    import { h, render, Text, Fragment } from '../dist/@vue/runtime.esm-bundler.js';
+    const vnode = h(
+      'div',
+      {
+        class: 'a, b',
+        style: {
+          border: '1px solid red',
+          fontSize: '14px'
+        },
+        onClick: () => { console.log('click') },
+        id: 'foo',
+        checked: '',
+        custom: true
+      },
+      [
+        h('input', { type: 'text', value: 'hello' }),
+        h('input', { type: 'checkbox', checked: true }),
+        h('input', { type: 'radio', checked: true }),
+        h('input', { type: 'radio', checked: false }),
+      ]
+    )
+    render(vnode, document.body)
+  </script>
+</body>
+
+</html>

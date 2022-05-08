@@ -1,0 +1,16 @@
+{
+	"name": "@vue/runtime",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"module": "dist/runtime.esm-bundler.js",
+	"buildOptions": {
+		"formats": [
+			"esm-bundler",
+			"cjs-bundler"
+		]
+	},
+	"dependencies": {
+		"@vue/shared": "workspace:^1.0.0"
+	}
+}
